@@ -1,0 +1,51 @@
+{
+  "DidProviderEthrMetaPlugin": {
+    "components": {
+      "schemas": {
+        "IAddAttributeArgs": {
+          "type": "object",
+          "properties": {
+            "did": {
+              "type": "string",
+              "description": "Decentralized identifier that the attribute should be set for"
+            },
+            "attributeName": {
+              "type": "string",
+              "description": "Name of the attribute to be set"
+            },
+            "attributeValue": {
+              "type": "string",
+              "description": "Value of the attribute to be set"
+            }
+          },
+          "required": [
+            "did",
+            "attributeName",
+            "attributeValue"
+          ],
+          "description": "Arguments needed for  {@link  IDidEthrMetaTransactionPlugin.addAttribute } \nTo be able to export a plugin schema, your plugin methods should use an `args` parameter of a named type or interface."
+        },
+        "IAddAttributeResult": {
+          "type": "object",
+          "properties": {
+            "foobar": {
+              "type": "string"
+            }
+          },
+          "description": "Result of  {@link  IDidEthrMetaTransactionPlugin.addAttribute } \nTo be able to export a plugin schema, your plugin return types need to be Promises of a named type or interface."
+        }
+      },
+      "methods": {
+        "addDelegate": {
+          "description": "Adds an attribute to a DID via the meta transaction wallet",
+          "arguments": {
+            "$ref": "#/components/schemas/IAddAttributeArgs"
+          },
+          "returnType": {
+            "$ref": "#/components/schemas/IAddAttributeResult"
+          }
+        }
+      }
+    }
+  }
+}

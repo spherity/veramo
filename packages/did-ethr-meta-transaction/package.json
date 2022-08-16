@@ -1,0 +1,42 @@
+{
+  "name": "did-provider-ethr-meta",
+  "version": "1.0.0",
+  "source": "src/index.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "veramo": {
+    "pluginInterfaces": {
+      "IDidEthrMetaTransactionPlugin": "./src/types/IDidEthrMetaTransactionPlugin.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "generate-plugin-schema": "yarn veramo dev generate-plugin-schema",
+    "start": "veramo server",
+    "build:watch": "tsc -b --watch",
+    "test:ci": "jest --config=jest.json",
+    "test": "jest --config=jest.json --coverage=false",
+    "test:watch": "yarn test --watch --verbose",
+    "clean": "rm -rf tmp && rm database.sqlite && rm -rf build && rm tsconfig.tsbuildinfo"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "28.1.6",
+    "@veramo/cli": "3.1.5",
+    "jest": "28.1.3",
+    "ts-jest": "28.0.7",
+    "typescript": "4.7.4"
+  },
+  "files": [
+    "build/**/*",
+    "src/**/*",
+    "README.md",
+    "plugin.schema.json",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@veramo/core": "^3.0.0",
+    "@veramo/did-manager": "^3.0.0",
+    "@veramo/key-manager": "^3.0.0"
+  }
+}
