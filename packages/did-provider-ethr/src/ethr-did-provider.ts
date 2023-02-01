@@ -219,6 +219,21 @@ export class EthrDIDProvider extends AbstractIdentifierProvider {
     throw new Error('EthrDIDProvider updateIdentifier not supported yet.')
   }
 
+  async updateControllerKey(
+    { identifier, kid, options }: { identifier: IIdentifier; kid: string; options?: TransactionOptions },
+    context: IAgentContext<IKeyManager>,
+  ): Promise<any> {
+    const gasLimit = options?.gasLimit || this.gas || DEFAULT_GAS_LIMIT
+    const key = await context.agent.keyManagerGet({ kid: kid })
+    if (key.type !== 'Secp256k1') {
+      throw new Error('EthrDIDProvider updateControllerKey only supports Secp256k1 keys.')
+    }
+    const address = computeAddress(`0x${key.publicKeyHex}`)
+    const ethrDid = await this.getEthrDidController(identifier, context)
+    const txHash = await ethrDid.changeOwner(address, { ...options, gasLimit })
+    return txHash;
+  }
+
   async deleteIdentifier(identifier: IIdentifier, context: IRequiredContext): Promise<boolean> {
     for (const { kid } of identifier.keys) {
       // FIXME: keys might be used by multiple DIDs or even independent

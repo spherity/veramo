@@ -153,6 +153,18 @@ export interface IDIDManagerUpdateArgs {
   }
 }
 
+export interface IDIDManagerUpdateControllerKeyArgs {
+  /**
+   * DID
+   */
+  did: string
+
+  /**
+   * Key ID
+   */
+  kid: string
+}
+
 /**
  * Input arguments for {@link IDIDManager.didManagerAddKey | didManagerAddKey}
  * @public

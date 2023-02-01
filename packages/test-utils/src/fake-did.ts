@@ -51,6 +51,10 @@ export class FakeDidProvider extends AbstractIdentifierProvider {
     throw new Error('FakeDIDProvider updateIdentifier not supported yet.')
   }
 
+  async updateControllerKey(args: { identifier: IIdentifier; kid: string; options?: any }, context: IAgentContext<IKeyManager>): Promise<any> {
+    throw new Error('FakeDIDProvider updateControllerKey not supported yet.')
+  }
+
   async deleteIdentifier(identifier: IIdentifier, context: IAgentContext<IKeyManager>): Promise<boolean> {
     for (const { kid } of identifier.keys) {
       await context.agent.keyManagerDelete({ kid })

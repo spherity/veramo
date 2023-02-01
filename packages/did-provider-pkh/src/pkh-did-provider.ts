@@ -79,6 +79,10 @@ export class PkhDIDProvider extends AbstractIdentifierProvider {
     throw new Error('PkhDIDProvider updateIdentifier not supported yet.')
   }
 
+  async updateControllerKey(args: { identifier: IIdentifier; kid: string; options?: any }, context: IAgentContext<IKeyManager>): Promise<any> {
+    throw new Error('PkhDIDProvider updateControllerKey not supported yet.')
+  }
+
   async deleteIdentifier(identifier: IIdentifier, context: IContext): Promise<boolean> {
     for (const { kid } of identifier.keys) {
       await context.agent.keyManagerDelete({ kid })

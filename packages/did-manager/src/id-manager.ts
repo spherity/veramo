@@ -19,7 +19,7 @@ import {
   IDIDManagerSetAliasArgs,
   MinimalImportableIdentifier,
   IKey,
-  IService,
+  IService, IDIDManagerUpdateControllerKeyArgs,
 } from '@veramo/core'
 import schema from '@veramo/core/build/plugin.schema.json' assert { type: 'json' }
 import { AbstractDIDStore } from './abstract-identifier-store.js'
@@ -57,6 +57,7 @@ export class DIDManager implements IAgentPlugin {
       didManagerSetAlias: this.didManagerSetAlias.bind(this),
       didManagerGetOrCreate: this.didManagerGetOrCreate.bind(this),
       didManagerUpdate: this.didManagerUpdate.bind(this),
+      didManagerUpdateControllerKey: this.didManagerUpdateControllerKey.bind(this),
       didManagerImport: this.didManagerImport.bind(this),
       didManagerDelete: this.didManagerDelete.bind(this),
       didManagerAddKey: this.didManagerAddKey.bind(this),
@@ -168,6 +169,28 @@ export class DIDManager implements IAgentPlugin {
       )
       await this.store.importDID(updatedIdentifier)
       return updatedIdentifier
+  }
+
+  /** {@inheritDoc @veramo/core#IDIDManager.didManagerUpdateControllerKey} */
+  async didManagerUpdateControllerKey(
+    { did, kid }: IDIDManagerUpdateControllerKeyArgs,
+    context: IAgentContext<IKeyManager>,
+  ): Promise<IIdentifier> {
+    const identifier = await this.store.getDID({ did })
+    const identifierProvider = this.getProvider(identifier.provider)
+    if (typeof identifierProvider?.updateControllerKey !== 'function') {
+      throw new Error(`not_supported: ${identifier?.provider} provider does not implement controller key updates`)
+    }
+    const key = await context.agent.keyManagerGet({ kid })
+    const result = await identifierProvider.updateControllerKey(
+      { identifier, kid },
+      context,
+    )
+    identifier.keys = identifier.keys.filter((key) => key.kid !== identifier.controllerKeyId)
+    identifier.controllerKeyId = kid;
+    identifier.keys.push(key)
+    await this.store.importDID(identifier)
+    return result
   }
 
   /** {@inheritDoc @veramo/core#IDIDManager.didManagerSetAlias} */

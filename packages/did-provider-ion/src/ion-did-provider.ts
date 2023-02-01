@@ -140,6 +140,10 @@ export class IonDIDProvider extends AbstractIdentifierProvider {
     throw new Error('IonDIDProvider updateIdentifier not supported yet.')
   }
 
+  async updateControllerKey(args: { identifier: IIdentifier; kid: string; options?: any }, context: IAgentContext<IKeyManager>): Promise<any> {
+    throw new Error('IonDIDProvider updateControllerKey not supported yet.')
+  }
+
   /** {@inheritDoc @veramo/core#IDIDManager.didManagerDelete} */
   async deleteIdentifier(identifier: IIdentifier, context: IContext): Promise<boolean> {
     const didResolution = await this.getAssertedDidDocument(identifier, IonDidForm.LONG)

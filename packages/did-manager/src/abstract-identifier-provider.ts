@@ -15,6 +15,11 @@ export abstract class AbstractIdentifierProvider {
     context: IAgentContext<IKeyManager>,
   ): Promise<IIdentifier>
 
+  abstract updateControllerKey(
+    args: { identifier: IIdentifier; kid: string; options?: any },
+    context: IAgentContext<IKeyManager>,
+  ): Promise<any>
+
   abstract deleteIdentifier(args: IIdentifier, context: IAgentContext<IKeyManager>): Promise<boolean>
 
   abstract addKey(
